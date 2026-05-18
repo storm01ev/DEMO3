@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head><title>Список заказов</title></head>
+<body style="font-family: Arial; padding: 20px;">
+    <a href="{{ url_for('catalog') }}">← Назад в каталог</a>
+    <h2>Список заказов системы</h2>
+    
+    <table border="1" cellpadding="10" cellspacing="0" style="width: 100%; border-collapse: collapse;">
+        <tr style="background: #eee;">
+            <th>Номер заказа</th>
+            <th>Дата заказа</th>
+            <th>Дата доставки</th>
+            <th>Пункт выдачи (ID)</th>
+            <th>ФИО Клиента</th>
+            <th>Статус</th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.order_number }}</td>
+            <td>{{ order.order_date }}</td>
+            <td>{{ order.delivery_date }}</td>
+            <td>№ {{ order.pickup_point_id }}</td>
+            <td>{{ order.customer_full_name }}</td>
+            <td><b>{{ order.order_status }}</b></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

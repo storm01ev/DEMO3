@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head><title>Каталог товаров</title></head>
+<body style="font-family: Arial; padding: 20px;">
+    <div>
+        <span>Вы вошли как: <b>{{ user_name }}</b> (Роль: {{ role }})</span> | 
+        <a href="{{ url_for('logout') }}">Выйти</a>
+        {% if role in ['Менеджер', 'Администратор'] %}
+            | <a href="{{ url_for('orders_list') }}"><b>Перейти к заказам</b></a>
+        {% endif %}
+    </div>
+    <hr>
+
+    <h2>Каталог обуви</h2>
+
+    {% if role in ['Менеджер', 'Администратор'] %}
+    <form method="GET" style="margin-bottom: 20px; background: #f8f9fa; padding: 15px;">
+        <input type="text" name="search" placeholder="Поиск по названию..." value="{{ request.args.get('search', '') }}">
+        
+        <select name="category">
+            <option value="">Все категории</option>
+            {% for cat in categories %}
+                <option value="{{ cat.category }}" {% if request.args.get('category') == cat.category %}selected{% endif %}>{{ cat.category }}</option>
+            {% endfor %}
+        </select>
+        
+        <select name="sort">
+            <option value="">Без сортировки</option>
+            <option value="price_asc" {% if request.args.get('sort') == 'price_asc' %}selected{% endif %}>Сначала дешевые</option>
+            <option value="price_desc" {% if request.args.get('sort') == 'price_desc' %}selected{% endif %}>Сначала дорогие</option>
+        </select>
+        
+        <button type="submit">Применить</button>
+    </form>
+    {% endif %}
+
+    {% if role == 'Администратор' %}
+        <a href="{{ url_for('add_product') }}" style="background: #007bff; color: white; padding: 10px; text-decoration: none; display: inline-block; margin-bottom: 20px;">+ Добавить новый товар</a>
+    {% endif %}
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+        {% for prod in products %}
+        <div style="border: 1px solid #ddd; padding: 15px; border-radius: 5px;">
+            <h3>{{ prod.name }}</h3>
+            <p><b>Артикул:</b> {{ prod.article }}</p>
+            <p><b>Категория:</b> {{ prod.category }}</p>
+            <p><b>Цена:</b> <span style="color: green; font-size: 18px;">{{ prod.price }} руб.</span></p>
+            <p><b>Остаток:</b> {{ prod.stock_quantity }} {{ prod.unit }}</p>
+            <p style="font-size: 14px; color: #555;">{{ prod.description }}</p>
+            
+            {% if role == 'Администратор' %}
+                <hr>
+                <a href="{{ url_for('delete_product', article=prod.article) }}" style="color: red;" onclick="return confirm('Удалить этот товар?')">Удалить</a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

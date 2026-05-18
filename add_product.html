@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head><title>Добавить товар</title></head>
+<body style="font-family: Arial; max-width: 500px; margin: 50px auto; padding: 20px;">
+    <h2>Новый товар</h2>
+    <form method="POST">
+        <label>Артикул:</label><br><input type="text" name="article" required style="width:100%;"><br><br>
+        <label>Название:</label><br><input type="text" name="name" required style="width:100%;"><br><br>
+        <label>Ед. измерения:</label><br><input type="text" name="unit" value="шт." style="width:100%;"><br><br>
+        <label>Цена:</label><br><input type="number" step="0.01" name="price" required style="width:100%;"><br><br>
+        <label>Категория:</label><br><input type="text" name="category" style="width:100%;"><br><br>
+        <label>Кол-во на складе:</label><br><input type="number" name="stock_quantity" value="0" style="width:100%;"><br><br>
+        <button type="submit" style="background: green; color: white; padding: 10px 20px; border: none;">Сохранить товар</button>
+        <a href="{{ url_for('catalog') }}">Отмена</a>
+    </form>
+</body>
+</html>
